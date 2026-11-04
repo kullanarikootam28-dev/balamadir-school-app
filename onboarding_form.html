@@ -1,0 +1,642 @@
+<title>Balamandir Details Update</title>
+<style>
+  :root {
+    --bg: #f6f4ee;
+    --surface: #ffffff;
+    --surface-2: #f0eee6;
+    --text: #1a2436;
+    --text-muted: #5c6678;
+    --primary: #1b4d8e;
+    --primary-dark: #123a6e;
+    --green: #1f7a3d;
+    --gold: #b8901f;
+    --border: #e1ddd0;
+    --danger: #b3261e;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(26,36,54,0.06), 0 8px 24px rgba(26,36,54,0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14181f;
+      --surface: #1c212b;
+      --surface-2: #232a36;
+      --text: #eceef1;
+      --text-muted: #a3adbd;
+      --primary: #6fa3e0;
+      --primary-dark: #8fb8e8;
+      --green: #5fbf7f;
+      --gold: #d9b856;
+      --border: #2e3644;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14181f;
+    --surface: #1c212b;
+    --surface-2: #232a36;
+    --text: #eceef1;
+    --text-muted: #a3adbd;
+    --primary: #6fa3e0;
+    --primary-dark: #8fb8e8;
+    --green: #5fbf7f;
+    --gold: #d9b856;
+    --border: #2e3644;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Work Sans', system-ui, sans-serif;
+    margin: 0;
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .display {
+    font-family: 'Fraunces', Georgia, serif;
+    text-wrap: balance;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+
+  .masthead { text-align: center; margin-bottom: 28px; }
+  .masthead .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .masthead h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 6px 0 8px;
+    color: var(--text);
+  }
+  .masthead p {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    background: var(--surface-2);
+    padding: 5px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+  }
+  .tab {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 10px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    line-height: 1.25;
+    transition: background 0.15s, color 0.15s;
+  }
+  .tab.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+  }
+  .card h2 {
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .card .sub {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    margin: 0 0 20px;
+    line-height: 1.5;
+  }
+
+  .field { margin-bottom: 16px; position: relative; }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="date"], select {
+    width: 100%;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .hint { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+  .error-text { font-size: 12.5px; color: var(--danger); margin-top: 5px; display: none; }
+  .field.invalid input, .field.invalid select { border-color: var(--danger); }
+  .field.invalid .error-text { display: block; }
+
+  .autocomplete-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0; right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    max-height: 260px;
+    overflow-y: auto;
+    z-index: 5;
+  }
+  .autocomplete-results button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 13px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .autocomplete-results button:last-child { border-bottom: none; }
+  .autocomplete-results button:hover, .autocomplete-results button.focused { background: var(--surface-2); }
+  .autocomplete-results .meta { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+  .autocomplete-empty { padding: 12px 13px; font-size: 13.5px; color: var(--text-muted); }
+
+  .selected-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface-2);
+    border: 1.5px solid var(--primary);
+    border-radius: 10px;
+    padding: 11px 13px;
+  }
+  .selected-chip .name { font-weight: 600; font-size: 14.5px; }
+  .selected-chip .meta { color: var(--text-muted); font-size: 12.5px; margin-top: 2px; }
+  .selected-chip button {
+    background: none; border: none; color: var(--primary); font-weight: 600;
+    font-size: 13px; cursor: pointer; font-family: inherit; white-space: nowrap;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .submit-btn:not(:disabled):hover { background: var(--primary-dark); }
+
+  .status-banner {
+    display: none;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .status-banner.success { display: block; background: rgba(31,122,61,0.12); color: var(--green); }
+  .status-banner.error { display: block; background: rgba(179,38,30,0.1); color: var(--danger); }
+
+  footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 24px;
+    line-height: 1.6;
+  }
+  [hidden] { display: none !important; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap">
+
+<div class="wrap">
+  <div class="masthead">
+    <div class="eyebrow">Balamandir Matriculation School</div>
+    <h1>Help us complete your records</h1>
+    <p>A few details are missing from our system. Fill in your section below — it takes under a minute.</p>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="parent">Parent /<br>Student</button>
+    <button class="tab" data-tab="teacher">Teacher</button>
+    <button class="tab" data-tab="staff">Non-Teaching<br>Staff</button>
+    <button class="tab" data-tab="transport">Transport /<br>Bus</button>
+  </div>
+
+  <div class="card">
+    <div id="banner" class="status-banner"></div>
+
+    <!-- ── Parent / Student ─────────────────────────────────────────── -->
+    <section id="panel-parent" class="panel">
+      <h2>Parent / Guardian contact</h2>
+      <p class="sub">Search for your child's name below — matching by name only, so double check the class and admission number shown before selecting.</p>
+      <form id="form-parent" novalidate>
+        <div class="field" id="student-search-field">
+          <label for="student-search">Your child's name</label>
+          <input type="text" id="student-search" autocomplete="off" placeholder="Start typing a name…">
+          <div id="student-results" class="autocomplete-results" hidden></div>
+        </div>
+        <div id="student-selected" class="field" hidden></div>
+
+        <div class="field" id="f-mobile">
+          <label for="parent-mobile">Parent / Guardian mobile number</label>
+          <input type="tel" id="parent-mobile" inputmode="numeric" placeholder="10-digit mobile number" maxlength="10">
+          <div class="error-text">Enter a valid 10-digit mobile number.</div>
+        </div>
+        <div class="field" id="f-email">
+          <label for="parent-email">Parent / Guardian email</label>
+          <input type="email" id="parent-email" placeholder="name@example.com">
+          <div class="error-text">Enter a valid email address.</div>
+        </div>
+        <div class="field" id="f-blood">
+          <label for="parent-blood">Child's blood group</label>
+          <select id="parent-blood">
+            <option value="">Select…</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn" disabled>Submit details</button>
+      </form>
+    </section>
+
+    <!-- ── Teacher ──────────────────────────────────────────────────── -->
+    <section id="panel-teacher" class="panel" hidden>
+      <h2>Teacher details</h2>
+      <p class="sub">If you're a teacher at Balamandir, add your details so the office can set up or complete your record.</p>
+      <form id="form-teacher" novalidate>
+        <div class="field" id="t-name">
+          <label for="teacher-name">Full name</label>
+          <input type="text" id="teacher-name" placeholder="Your full name">
+          <div class="error-text">Enter your name.</div>
+        </div>
+        <div class="field" id="t-mobile">
+          <label for="teacher-mobile">Mobile number</label>
+          <input type="tel" id="teacher-mobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number">
+          <div class="error-text">Enter a valid 10-digit mobile number.</div>
+        </div>
+        <div class="field" id="t-email">
+          <label for="teacher-email">Email</label>
+          <input type="email" id="teacher-email" placeholder="name@example.com">
+          <div class="error-text">Enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label for="teacher-qual">Qualification</label>
+          <input type="text" id="teacher-qual" placeholder="e.g. B.Ed, M.Sc B.Ed">
+        </div>
+        <div class="field">
+          <label for="teacher-spec">Subject specialization</label>
+          <input type="text" id="teacher-spec" placeholder="e.g. Mathematics">
+        </div>
+        <div class="field">
+          <label for="teacher-exp">Years of experience</label>
+          <input type="number" id="teacher-exp" min="0" max="60" placeholder="e.g. 5">
+        </div>
+        <div class="field">
+          <label for="teacher-join">Date of joining</label>
+          <input type="date" id="teacher-join">
+        </div>
+        <div class="field">
+          <label for="teacher-remarks">Remarks (optional)</label>
+          <input type="text" id="teacher-remarks" placeholder="Anything else the office should know">
+        </div>
+        <button type="submit" class="submit-btn">Submit details</button>
+      </form>
+    </section>
+
+    <!-- ── Non-Teaching Staff ───────────────────────────────────────── -->
+    <section id="panel-staff" class="panel" hidden>
+      <h2>Non-teaching staff details</h2>
+      <p class="sub">For office, support, and other non-teaching staff — add your details for the school's records.</p>
+      <form id="form-staff" novalidate>
+        <div class="field" id="s-name">
+          <label for="staff-name">Full name</label>
+          <input type="text" id="staff-name" placeholder="Your full name">
+          <div class="error-text">Enter your name.</div>
+        </div>
+        <div class="field" id="s-mobile">
+          <label for="staff-mobile">Mobile number</label>
+          <input type="tel" id="staff-mobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number">
+          <div class="error-text">Enter a valid 10-digit mobile number.</div>
+        </div>
+        <div class="field">
+          <label for="staff-designation">Designation</label>
+          <input type="text" id="staff-designation" placeholder="e.g. Office Assistant, Peon, Accountant">
+        </div>
+        <div class="field">
+          <label for="staff-department">Department</label>
+          <input type="text" id="staff-department" placeholder="e.g. Administration">
+        </div>
+        <div class="field">
+          <label for="staff-join">Date of joining</label>
+          <input type="date" id="staff-join">
+        </div>
+        <div class="field">
+          <label for="staff-remarks">Remarks (optional)</label>
+          <input type="text" id="staff-remarks">
+        </div>
+        <button type="submit" class="submit-btn">Submit details</button>
+      </form>
+    </section>
+
+    <!-- ── Transport / Bus ──────────────────────────────────────────── -->
+    <section id="panel-transport" class="panel" hidden>
+      <h2>Transport / bus details</h2>
+      <p class="sub">For transport coordinators or drivers registering a school bus.</p>
+      <form id="form-transport" novalidate>
+        <div class="field" id="tr-number">
+          <label for="bus-number">Bus number</label>
+          <input type="text" id="bus-number" placeholder="e.g. TN 25 AB 1234">
+          <div class="error-text">Enter the bus number.</div>
+        </div>
+        <div class="field">
+          <label for="bus-route">Route</label>
+          <input type="text" id="bus-route" placeholder="e.g. B.Pudur – Mittapalli – Chengam">
+        </div>
+        <div class="field">
+          <label for="bus-driver">Driver name</label>
+          <input type="text" id="bus-driver">
+        </div>
+        <div class="field" id="tr-contact">
+          <label for="bus-driver-contact">Driver contact number</label>
+          <input type="tel" id="bus-driver-contact" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number">
+          <div class="error-text">Enter a valid 10-digit mobile number.</div>
+        </div>
+        <div class="field">
+          <label for="bus-capacity">Seating capacity</label>
+          <input type="number" id="bus-capacity" min="1" max="100">
+        </div>
+        <div class="field">
+          <label for="bus-notes">Notes (optional)</label>
+          <input type="text" id="bus-notes" placeholder="Pickup points, timing, etc.">
+        </div>
+        <button type="submit" class="submit-btn">Submit details</button>
+      </form>
+    </section>
+  </div>
+
+  <footer>Your details are sent directly to the school office and are not shown publicly.</footer>
+</div>
+
+<script>
+  const SUPABASE_URL = "https://atfyumihqsxvzzcifupg.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0Znl1bWlocXN4dnp6Y2lmdXBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1Mzk2ODksImV4cCI6MjEwNDExNTY4OX0.Z7rfkMj9ikjmPCbZexlWHEhsbHZxZOeouonUIeoWuZg";
+  const DIRECTORY = [["AATHIRA A","III-A","0000","09462638-c2e2-4f85-8276-467d51cd4894"],["SHMITHA V","LKG-B","0000","07e72454-1aa8-466e-9682-7eb3e70bb625"],["SIDDHIK J","LKG-B","0000","bb608b91-729e-4c5f-a4d3-7cd69f916608"],["NISHANTH K","LKG-B","0000","0c3b0dbc-40aa-4f2f-9bf1-297771b03c7a"],["KRISHIKA KURALAMUDHU S R","X-A","1122","8cc3b1e6-f5c0-466e-8886-0b8fc699ced9"],["ABISHEK E","X-A","1212","9e54529d-d3c6-4f4d-a4b0-dc6ac33aee36"],["MUDHASHEER S","X-A","1224","48e81ad2-04a6-45b2-ad50-ce6f264b7118"],["ANBUSELVAN S","X-A","1278","c89e674e-dddd-42d6-8e2c-3071556af563"],["NISHANTH","X-A","1297","4991a712-9540-43e4-a32d-d4322bdfe0ca"],["MUSKAN R","X-A","1310","2bc8b741-ac2b-4359-8815-fc403c231a74"],["Karthiyayini","IX-A","1433","0f859590-d0ae-49e4-80ce-20f5a5f778b9"],["Mohanraj","IX-A","1444","f8753d49-7c8a-422e-8f69-32a33ac90ceb"],["Haricharan","IX-A","1505","b23805e6-ff46-4e1d-b75e-27c6136b9a86"],["Tamiliniya","IX-A","1508","5d6c9461-9c97-4492-bdae-df6069a1b45b"],["Shivani","IX-A","1513","67232a62-3f7d-4dfb-8ff6-187d60265d2a"],["YUVASRI M","X-A","1616","91effca7-c0e6-4d0e-97d7-b9268d523704"],["KANUSHKA","VIII-A","1658","34c7ca75-e7de-4ed0-9f9b-72784b130326"],["ISWARYA","VIII-A","1659","9fe7aa06-b863-4270-8c86-78e460acdf7d"],["ENIYA","VIII-A","1667","3a21eed0-8930-4c32-a5f8-b2f5c192f98d"],["lokesh","VIII-A","1708","31956fa2-b0ea-4d71-8efc-92180d0ea5d9"],["KAVIMANI","VIII-A","1726","658b9d47-b190-4e8a-a327-5a68b2f35935"],["DEEPAK B","IX-A","1735","58c6c23b-6226-44b5-b158-7f6bfddc34db"],["ISHITHA","VII-A","1821","f63f1c0a-e659-4a0a-848b-e8496aac1bfc"],["VINOTH","VII-A","1823","899c3841-1ee8-45f8-ae7f-199c28c08f82"],["DHILIP","VII-A","1827","cc21b955-6752-426b-ad1c-caa6ddd64b98"],["SAKTHI","VII-A","1845","96281d8f-b700-4f78-aeda-7f0404126177"],["YOSHAANTH","VII-A","1857","b69db231-8ccc-4139-8b0d-bcd09ff56a18"],["MUZAMILL","VII-A","1869","80335af8-08c3-4239-b534-b826e0dff2d8"],["VANMATHI","VII-A","1873","3c01c72f-bd4b-45f8-8adb-0f9a678b60ab"],["RAJAGANAPATHY","VII-A","1874","2805058c-271c-40ae-b653-af8d75ef05d6"],["S INIYA DHARSHINI","VI-A","1884","ab4b9fbe-9349-4264-86f1-88a448e0d6a2"],["YUVASHREE","VI-A","1886","e260353c-ac14-43d6-8966-859c9456e116"],["DEEBESH","VI-A","1891","df1151a0-7b42-4438-a379-67384fc0720c"],["DEEKSHITHA","VI-A","1895","df6b772d-f202-4ccc-a093-df05e09e73f3"],["DAKSHESH","VI-A","1896","6c3a4135-82f0-415b-a1ab-7a0149c94f1a"],["GOWTHAM","VI-A","1905","e4f38ff2-c2f1-4ef8-b428-be2eb4ef0901"],["THIRUMALAIVASAN","VI-A","1906","a83c2b28-a543-4840-80f9-fd8e70463d3a"],["PRAVEEN KUMAR S","VI-A","1915","483530cb-4544-4d09-8889-18c77528f08d"],["MITHRA","VI-A","1921","16ee4bcd-a099-4f22-b6f1-1e543ff72ba8"],["THARUN","VI-A","1922","ac6f2d4a-dbb0-4d71-a2a5-4bd4e5754f5c"],["AKSHITHA RIYA","VI-A","1954","cbc2873e-e0ac-4b3d-8384-6cac78da0679"],["SRIMATHI","VI-A","1956","4d4f003d-e9c9-4d95-ad00-ed4fa131f133"],["FARISA","VI-A","1959","a9f82cd1-c453-448a-afec-dcc056ddee47"],["LAKSHITHA","V-A","1983","c949bd4e-c8a6-4475-92ea-ca1dd254c0be"],["GURU","VIII-A","1994","de122462-52d8-4146-a95d-a3c40ddbeba9"],["SARVAMITHARN","VI-A","2008","2f8d4fd9-874f-4eb4-b720-0e14eeeb19e1"],["VETRIMARAN R B","V-A","2014","d858d74b-8620-409e-89ea-45c79d481e9b"],["SHRI SAKTHI","V-A","2027","22cb64d2-07e7-414d-a974-75b20c1bf0ff"],["HARISH","V-A","2029","1ff5c309-d939-4fce-a1bd-f19df9cfc536"],["KAYALVIZHI S","III-A","2037","c2020d8f-bfda-4303-a95d-9759ba5bad46"],["THAMIZHINI","III-A","2039","78ea3dab-17e2-41a4-bccc-89c989bb5dc0"],["MOZHI AMUTHAN","III-A","2040","1eaf1a6f-fae4-40af-b570-d7cef3d3cafd"],["RAYHAN","III-A","2041","e23abe58-2922-49ce-9a7c-6cab51c9b471"],["DIVYADHARSHINI","III-A","2043","ee2af566-cf1a-4fd8-a312-f16c1d8ba2d3"],["MOHAMMED ARSHAN","IV-A","2045","1b0fcb14-57bc-42d4-b241-a1e9b52b9b6f"],["LAKSHNA","III-A","2050","47f5aee5-c0e8-4160-b01b-0eaee46896ef"],["CHENSURIYAN P","III-A","2053","abc7c1fc-30b1-4e17-a9fb-819f0f3e59e6"],["GOPIKA","III-A","2057","1a96b564-8939-4cce-b5cf-ff953a541978"],["GURUCHATH","III-A","2060","1352a5d3-2adf-4c20-948a-61811ffffd3d"],["SABARI","III-A","2062","aa1e8c27-c04b-4eb2-aa8c-b67983976cfe"],["VARSHINI S","IV-A","2068","80064058-cad7-4429-bef2-f83290f0d8bc"],["YASANA P","IV-A","2070","d099ba31-768f-4f3a-add5-12fbfc21c97d"],["MOHAMMED MUDASSIR","IV-A","2072","f08aabe6-f84e-4ce5-9f30-1bfb9c8f3ae7"],["BHUPESH","IV-A","2073","cc1ecd79-56f7-4b01-a6d9-9ef4458309a0"],["DHARSHINI","IV-A","2078","af7ea9f2-3d6d-45f5-9c9b-f8b67a47c3ca"],["DEEPAKRAJ","IV-A","2080","d4cf4ac3-8ffe-45ca-91d6-d259ec54531e"],["SABARISHA","IV-A","2081","12b1f7c8-dba1-4745-9e6a-d21cbd78e414"],["SRIHARAN","IV-A","2082","a5f78fa3-a337-49ca-8d96-058d9b3e624e"],["ALIZAFATHIMA","IV-A","2083","42514ced-ca2c-4350-88d3-ebc9e2ce3e52"],["APSARA","IV-A","2086","a6c8260c-ae11-457a-8b29-2cebe5a26cea"],["NAVEENKUMAR M","VI-A","2094","8a7e3849-3225-4048-b027-af9f304df2c7"],["MOHAMED AZYAAN ZYAN T","VI-A","2095","3e03fca1-ef52-42f5-aa63-a3464990100b"],["MOHAMMED ARFAN A","V-A","2096","5856aca1-d125-42d9-802a-d7a106e7ccd3"],["SAADIQA","V-A","2098","78413bf7-e7bb-4724-bd3e-f6c44e33879a"],["BHUVANESHWAR R","V-A","2106","67c95316-a22a-445c-bd05-942e10f6b943"],["DHEERAN P","VI-A","2108","7c95cf0b-8e84-4dc1-80df-0a9c94af0143"],["PRIYASHAGI A","VI-A","2112","0d4fcdb7-4d8c-4f24-8a74-8bc1bc4f68e1"],["YUVARAJ G","VI-A","2114","80e4ebfc-f9e9-4e94-8f7b-f7d9071722cf"],["OVINESH M","VI-A","2115","0f840334-a367-4554-b3c6-715ba6ec1ea6"],["ABDULNIRSHAN J","VI-A","2117","71c4e6c8-abff-4781-a27d-87f9356dbd51"],["ANU DHARSHINI M","VIII-A","2125","df850071-38f0-4843-91c8-a7a5b1467018"],["POOJA M","VII-A","2126","ea77a433-acc6-4f8c-881a-cc84f1fc3718"],["SANJANA DEVI M","IX-A","2134","a8c3161c-a40b-4448-a63d-fa433cce1be6"],["SIRANJEEVE V","IX-A","2135","1afd4236-fee5-4f81-8cab-dd66e01a424f"],["PIRTEESH G","IX-A","2136","3347b006-16c5-402f-a67e-f025b3786ed9"],["Azhaar Ahmed A","IX-A","2141","ee7b0d17-6b03-4b86-b9a1-ac811a4bcb55"],["ABRARULLAH A","X-A","2142","72fa1cda-c13b-4cbb-9ff4-72807df622c7"],["MADHUMITHA S","X-A","2144","c946bf32-e355-4b71-9922-2bbacd30d86e"],["HARISH","IV-A","2154","525d450c-ab3b-439c-8d72-c043ad63084a"],["MOHAMMED SHANOFER J","V-A","2155","9824f3f3-fc17-4fcb-9e51-9ba4293418df"],["HARSHITH A","V-A","2164","18d8011d-59ab-41e6-bdc3-55763705aa75"],["A HARSITHA","VIII-A","2165","15ec29f1-5eb9-41e8-8692-27b43a4b213a"],["VETRISELVAN K","V-A","2170","8a5ecf8d-3e0d-41ad-82dc-c62609b1895f"],["SARVESH P","IV-A","2171","2ebd4dce-b0f6-41f3-81a3-9f203572f9a3"],["THARUNKUMAR S","IV-A","2175","ad0d0f80-e58b-4524-bcc6-de9c305cccc7"],["MATANIKA","III-A","2176","30d9b4fa-e1d0-497f-aa77-5eaa7ffa4534"],["SANJANA","IV-A","2177","0f11d00b-2ffe-4157-98a1-4869a63b6699"],["SIDDHARTH","IX-A","2186","54a51471-1645-409d-bf72-d85a16f20c53"],["DARSHAN S","II-A","2189","9b2a1cc1-65ef-4616-93dd-af87b89af552"],["Heenasri","II-A","2190","867f2b96-2810-4f74-9ff2-5e3640ad59d4"],["RAGUL D","II-A","2192","3f95fade-d0b9-403b-b07e-93ba7a54ac8b"],["KANISHKA N","II-A","2193","14835fcf-b073-427c-85f0-ab9431652893"],["M DEV SARAN","II-A","2197","5a9d146e-c083-4b5c-a88e-b807de8f007c"],["THANISH R","II-A","2198","d436a220-e6e2-484d-adfb-1b6f4ceba936"],["SHAHANA","III-A","2202","02265800-081b-400c-ba72-2010ae0c14ba"],["THARANESHWARI","III-A","2205","360da0dc-0934-49d1-b694-f37028ab8672"],["GURUSRI","IV-A","2207","a381d751-506f-46ad-b507-c730334132d4"],["NIVETHA","III-A","2209","ef1f86fa-466f-4ca8-b0fb-9a4a748c0a77"],["SHARVESH","II-A","2215","54edd01a-3eeb-4037-abe5-7f2e1fc7bc5a"],["DILIP","II-A","2216","bfb6d60f-5c4e-47c1-8b84-da970a37f18b"],["KEERTANYAA","II-A","2217","4baa53fe-fec9-40fd-8d85-6dd33acd0e67"],["ANANYA A","IV-A","2218","4ed91584-1d21-4868-b32c-076f208aea58"],["ROSHIKA A","VI-A","2219","8b357fe0-5f64-4db2-8781-1fdf26ac3089"],["PUGAZH R V","IX-A","2227","5c06cd0c-deee-4889-b793-ec2a5c441f40"],["DHAYA R V","VII-A","2228","96b642b2-de82-4cbd-acbe-3aaeeb1fa7b7"],["PRANAVSRI T","V-A","2229","4310581e-deeb-4876-9c28-3a4466d0cab0"],["SUSITHARAN K","X-A","2235","6a0d3c5c-b78d-4b76-9e1c-28e19833e92e"],["SUBASH K","X-A","2236","add8d282-7cf0-4009-9dc7-a43eda1f3b9a"],["MAHISHASURAMARTHINI N","X-A","2237","f4fe4a90-c02e-4efc-a894-8fd0633701b3"],["MONISH A","V-A","2239","95bfab98-c83e-4736-ba36-39b14ddca0cb"],["DHASHWIN","II-A","2246","4e35c587-82ad-456f-ba7b-10765bb1b100"],["MAGISH MITHRAN","II-B","2248","43c6e521-8733-45db-9a90-ea0b41ba275d"],["CHANDRU","II-A","2250","fa02e93d-71a2-4cf8-a7de-659c96e0348f"],["RITHANYA","II-A","2252","7769bd3c-45c0-4ace-ba49-804d3fd1c625"],["SRIDURGA","II-A","2256","292f914a-aeee-4046-9d50-3a426eecb2d3"],["MUZAKKIR","II-A","2258","24d208d3-41ad-4d6e-9837-5c4edc34bbc8"],["SIDDARTH","II-A","2259","9efd8f3f-8f11-4c28-9924-45437fcb2c83"],["KAVI SRI  S","IV-A","2261","5ef18e0b-6283-46f0-83f9-05aedf1b5770"],["YUVANYA","II-A","2262","919d4b4e-2741-467f-b3f1-352353238343"],["LAKSHANA","III-A","2270","9f8ea605-873b-43d0-901f-b550a24eb386"],["RAKSHAN","III-A","2277","fd35a4f5-7a17-4a00-ba23-35ef2bb822bb"],["BATHMAVARSHINI N","VII-A","2280","ba519d80-6dcf-4be7-9985-5d1c58ff36ca"],["KESHAV S","V-A","2285","b20b8f79-c3f3-467c-ae67-b999d8618b9f"],["VINAYTHARAN V","VI-A","2286","874c2ad8-0316-4fe0-9fdf-b3d61a5f60ee"],["BATHMASHIVANI N","IV-A","2291","3cd480a8-0084-4893-a236-77a2f081003a"],["MITHRAN","IV-A","2294","2696e20e-2e38-4feb-b337-1d78bf042a85"],["GOKULPRASATH S","IX-A","2295","a1299103-c401-4f1b-be70-89b42e4afc0f"],["KAVITHARAN U","VIII-A","2296","a4b96611-56fa-4050-95e8-a665963dc222"],["CHANDRU T","VIII-A","2298","0e00a69f-8a19-45d7-ac70-c45aff461dcd"],["ANNAMALAI G","I-A","2313","3eaeb3cc-1546-453a-a1d1-102570a4d2b0"],["Lakshana","I-A","2315","0b55e6f4-2a55-4815-ab8f-f986140960bb"],["AL NOORA","I-A","2317","cb15eb1f-e532-4eb7-8e7f-e5e76e20048a"],["LITHISH KANNAN S","I-A","2318","bd1064ee-5d8f-4bee-8e54-5f967bd88d3a"],["BUVANISHA P","I-A","2320","89ffd329-80e1-4311-99dd-f61c7886e55e"],["M THIRISHAN","I-A","2322","90767d57-7bc8-44c2-a86f-88b8fc0db8e9"],["RIFA THASKIN","I-A","2323","c5eaa3e0-721b-4261-a021-eec65f0a7625"],["PAVITHA SRI P","I-A","2324","8395680f-0ba4-4c18-a393-80f21ca1216f"],["SUBIKSHAN","I-A","2326","fb8ebd41-388c-4a69-9786-3bbb57a7e7a5"],["SUDHARSHAN","I-A","2327","7b35d167-c7c9-43ab-8413-b183f7079c00"],["MADHINANDHAN","I-B","2328","3af86d69-775c-4ead-a2fb-04871a44ce7c"],["MYTHRASHREE","II-B","2330","f5674cb5-647b-4227-a0e6-670c79827c39"],["DHANUSHIYA","I-B","2331","5a650cdf-a785-42af-b8f3-a7ec450c300d"],["KRITHIK KUMAR","I-B","2332","0a90d025-c81e-4862-876e-a731985c4543"],["NITHYAVARSHINI","I-A","2336","74eaaa44-1101-4221-8d46-1f811ae916e6"],["MOWNISHKA","I-B","2337","d9cbebff-4949-4fac-87c6-bef016f88416"],["CHEZHIYAN","I-A","2339","5d80b848-7e2b-485f-842d-fb2236fc61b0"],["YASHWANTH","I-A","2339","f03ae5af-03fe-480a-a4f3-28faf38cb514"],["AKASHAN","I-A","2343","291ff862-ab71-4ab3-96cf-985ce95d434b"],["NITHISH KATHIR","I-A","2344","3732cb86-d3c9-45d3-bd4a-a7c9f79920f2"],["LAKSHITHA","I-A","2345","8920b869-1421-48f0-a82e-04ae976470db"],["PRADEEKSHA M","III-A","2346","37ff7827-6d83-4cf3-9e70-74cea4dec8e2"],["VETRIKONDAN","II-B","2346","f540c953-414d-4642-a189-bea65d666688"],["DHILVAN","II-B","2347","66f90ef6-a046-4995-ba05-3b1b806d72c1"],["ANTONY LEWIN J","III-A","2348","e690f7b4-01e4-4754-b0f7-fcb3ddc56046"],["MOHITH BAIRAV","II-B","2350","253ab43c-caa9-4b83-a59d-bb60e5757db4"],["ALAGUTAMIL","I-B","2352","b35723cb-02bd-446c-a14c-3e1fe3fb3823"],["MOGAVARSAN","I-A","2353","573761ff-941a-4052-b6e3-b6baf571ca22"],["YASWANTH","I-B","2358","bd8d30ed-ef2a-458b-922c-182e4dab0449"],["PRANAVI","I-B","2359","63c78f36-8fa9-4165-a0c9-15a1bb7bfe16"],["KISHANTHA","I-A","2361","133858b6-0f61-44e6-8f90-8becf1653312"],["THENNARASI","I-B","2362","fee34815-b2a9-4471-b384-5f8a0f45ba03"],["SARFARAZ","I-B","2367","5c894e18-1116-4ffb-9735-6394383f4f04"],["KANISHIKA","I-A","2368","29bbe290-d7dc-4900-958f-aafd2935f1dd"],["VARNIKA","I-A","2372","0b4c7e0f-8cac-466f-8d33-d85d025c6068"],["SANJANAYAZHINI S","III-A","2376","90522373-2c76-44ba-9daa-2d412cfa9855"],["DHARNISH","III-A","2377","80ae151b-b097-4da3-9ae5-5dc079c1cd48"],["R PRITHVIRAJ","III-A","2378","fd60d33f-1e99-4f54-97a2-17f950910e63"],["NAVEENPRASATH V","III-A","2379","4aea80c0-19b8-4d9b-9c2c-7b71714e9ada"],["GOKUL S","III-A","2380","1cac9e98-a05d-4b4f-af45-5ccc09ff24f2"],["AASHIF S","III-A","2381","4121e175-1b7b-4210-9922-e487c8b4c2be"],["RITHIKA M","III-A","2383","12e9363e-9ed9-4d64-a93e-91a6e89d1e67"],["VARSHAN S","III-A","2384","f10a920f-336a-4af7-b7dc-9022ccdde63e"],["ROHITKRISHNA K","III-A","2385","7e6d1557-b26d-47ac-ab13-fe3e5aae1ca5"],["SUDARSHAN V","III-A","2386","3fc17c81-08a7-4339-926c-e68310054ac8"],["KAVINEYAN KATHIR K","III-A","2387","ca947f29-6f82-4572-ba27-1b2ed2e150f8"],["THANISH","V-A","2399","9281de9d-fa3f-43e0-9036-582c8db8f47a"],["JAGATHESH","V-A","2403","72087430-bb3e-40c4-9d5e-c98ba30cc45b"],["PRADHISH V","VI-A","2404","1172468a-73a0-4222-b48e-76044e0fabdf"],["ANTONY ALWIN V","V-A","2405","29f81c43-d928-4b9f-93a4-fc912ae96d28"],["AFSHANA S","VII-A","2407","f990c785-3fd1-407b-aa5f-8c062a880940"],["S KATHIRAVAN","VII-A","2411","a7c7e808-97af-4341-bacd-84b4015756a7"],["THEERTHAGIRI K","VIII-A","2417","fcd626ed-393a-4bd4-9177-9dd375413d50"],["Shivani V","X-A","2419","594ed93b-14e0-4f95-a3e9-02ee7d3fc6d2"],["MUSKAN M","IX-A","2421","09ebd19f-cc1a-442d-8991-173f2ae20d05"],["MOHAN S","X-A","2422","dd6ecf44-bee9-4f43-9ca5-aa6f37cde0bc"],["KIRTHIK T","VIII-A","2424","dfed85bf-7c58-4afc-869d-843a55ffb5e9"],["CHARU T","VIII-A","2427","c2443c77-b43b-4486-9769-27bb9dc51e25"],["NITHISHWARI K","VIII-A","2428","7c5c304a-41ca-4420-bbd0-c79acb589c92"],["HINA","I-B","2429","c33c4891-d593-4f19-9dc9-3de8aa82cb6e"],["MONISHA","I-B","2430","2978e061-a653-4fbe-9104-ecfe65fd8637"],["NITHIYASREE","I-B","2439","f578ca72-14bf-44a4-b970-4594e5750e3f"],["MEIYARASU","I-B","2442","c1766ef2-422a-4237-807f-586ced405477"],["RISHVANTH","II-B","2444","79e2ca92-6d55-4fa1-b564-f6a138d1c6ca"],["THIRUMALAIVASAN","I-B","2447","6d19c78b-e091-4c2c-9831-b8bf989415d0"],["KANISHKA","I-B","2448","51a69a11-2205-49be-a681-f232d1e349db"],["ARAVINDKUMAR S","VIII-A","2449","852ff3c5-2604-42ca-b04c-51e5e8417179"],["SARVESH S","V-A","2451","d66a3ff1-3300-41fc-8781-c51c68524de5"],["PUGALESHVARAN T","I-B","2457","335e3078-9c2d-462a-8072-046511218984"],["YUVASRI","I-B","2492","9f34aa3e-674c-4afb-ba3b-6cbdc3fee4d9"],["NAVINISHWARAN","I-B","2494","d1f7f033-3b43-4c7c-b379-eca63c687f38"],["POOVIZHI","I-B","2504","f641aed1-deed-49b2-a274-aa8dcb7d8ea5"],["PRAJEETH K","IX-A","2507","8a52c814-22a9-4b1c-bcec-4a79bfd58716"],["Praveen K","IX-A","2509","3ec9602e-0c40-4736-9ead-2bba006b4105"],["HARIHARAN K","VII-A","2510","aa865449-5bee-4a33-8d76-e381682d356b"],["SABARISH R","VII-A","2512","3d593712-6cb6-499a-aeab-21a8c8cd29b4"],["PRITHI V","VI-A","2513","6b7fcb7c-e94a-4173-8f3f-e6c91ea8ea62"],["SIVASRI V","V-A","2514","bed8cc74-b705-458c-aaac-5422214ecc0a"],["MOHAMMED THOUKIR M","V-A","2516","3afbdd4f-a5e5-4040-a6f3-20c4c156c8f9"],["AMARNATH RAM A","V-A","2517","26a1e440-5e9a-47dc-ad68-6b99864281e8"],["PARASURAM K","V-A","2518","d8dc8433-6282-4dbc-bb95-1f35ade0123f"],["ADARNIYA K","V-A","2519","699a70ac-11fa-46bc-99c9-aba275ad29a9"],["MONITH","V-A","2520","6a556757-3396-4439-a819-8ac7816d52b9"],["DEVADHARSHINI K","V-A","2521","5f403a2c-ec85-46af-9156-4a31f52b7a39"],["ARIHARAN I","IV-A","2522","95770c2b-fa15-48b3-9142-8ea30ae1d339"],["PARASURAMAN M","IV-A","2523","f83d6bb4-cc82-46ae-b02b-fdc61ce7df52"],["TEJASRI","IV-A","2524","4f7666e5-faf6-414f-a984-b2220682574b"],["KAMESH V","IV-A","2525","5e743d12-fa5a-4cab-a51b-4ab698a444c6"],["S MAHALAKSHMI","IV-A","2526","5197a9c1-7b25-4bf6-8a4e-ba88a661374d"],["OWSHITH S","IV-A","2528","dba52486-c6e8-454b-974a-b8aa9555097d"],["SETHURAM K","III-A","2529","c4af93bc-fd73-4ec7-b86a-c51a2d244e23"],["NIKITHA CHELLAM","I-B","2530","c8d2bdc5-a416-4ae2-8e80-e4c7444385b8"],["MUBASHIRA M","III-A","2531","4abe7c62-d302-4aaa-879f-dad1f4798c2a"],["VEERASABARI G","III-A","2532","5208ffba-38cf-4737-8a9e-c6acdaeb803c"],["SUTHARSAN K","III-A","2534","0f5431f7-df1b-42d0-8be5-6423913e6f14"],["VISHNITH","II-B","2537","50f41448-3438-40b9-887d-a9d18c56194c"],["KOWSIKA","II-B","2538","824d82d9-846d-496d-b792-484f2d09f614"],["YASWIN I","II-B","2540","60491644-dfa0-4435-8665-2a09ab63db30"],["TEJASRI K","II-A","2541","37eb1394-cd64-4716-8e1b-7baa198e8627"],["JEINESH V","II-A","2542","16427717-0d9a-499e-8378-c858b67c5e9d"],["KOUSHIKA SHREE","II-B","2543","63ddee06-b853-4c10-9f67-029b418beee9"],["THEJASRI","I-B","2547","b1b49291-73e4-4749-b502-53647af0d3a4"],["PRATHIKSHA SRI","I-B","2548","78a5d1e6-cc87-4050-9e78-837dc99ee1f4"],["MUSFIRAH FATHIMA I","I-B","2551","8f407da4-d546-4a95-82b8-3eb16c042994"],["PRANESH","I-B","2552","0aa6c2c3-0200-4111-9947-7ba3390d68a6"],["ANSIRA TASNEEM","I-B","2555","236d5939-7802-4e22-9299-8f657772fe8c"],["DHARANYA M","VII-A","2556","0544f4aa-b4ab-4692-98de-bfe03ffeaf7a"],["Kailash A","VII-A","2557","4dc27bc8-ef89-4b30-9964-e02b093ee985"],["MIDUNRAJ","I-B","2570","839b7574-37af-4534-8364-69b418098fc3"],["IMTHIYAS K","V-A","2575","edd7d4dc-553c-4044-9ea2-5cdfc48f0b16"],["SUJIVARSHAN","II-B","2577","ee888c2d-c39e-468e-ad2a-ab8bdebd059b"],["PRANITHA","II-B","2583","694abdf8-66ba-44be-8804-c02521fc7898"],["LIYASHREE P","LKG-A","2593","ef0bae11-88a0-4a02-83cd-9b4e3f9a91dc"],["A SAFFIYA","LKG-A","2594","b949396b-5cb9-4728-a878-489ac58fac86"],["A MOHAMMED AZLAN","LKG-A","2595","bd2114f5-d110-4ad8-a66f-fcb22fac198c"],["PRANAV R","LKG-A","2596","b3d0fbf5-e068-4970-8fa2-af1c3ce2c624"],["M ABDUL RAHMAN","LKG-A","2597","97fade8a-e5e2-4615-ba96-db1ea5b261b1"],["NITHIN MARAN P","LKG-A","2598","d427889c-1963-41c7-8f10-8cd2b27f0202"],["A JASIKA SRI","LKG-A","2599","e1d9b19c-6fd3-4460-b7b2-4f18a475a967"],["P THANISKA","LKG-A","2600","fab708b9-fc42-4dfb-b839-99d9844e9750"],["HARINI M","LKG-A","2601","321dadec-6453-403b-8cea-322c87682bce"],["MOUNESH S","LKG-A","2602","31b1b53e-0a49-4145-bea1-4086325fe8ec"],["K DIVASHINI","LKG-A","2603","62a50d29-1718-4d78-ab8b-c9a144e16cfb"],["LAKSHANA V","LKG-A","2604","a8d33764-12f5-4ab3-8b97-91c24750442a"],["THARSHIKA S","LKG-A","2609","a225e3b0-bb19-4aaf-a492-7cca1754f331"],["HARIHARAN","LKG-A","2611","70ed748d-814b-4915-ad62-239337f260f0"],["YAAZHINISRI S","LKG-B","2615","e106850c-290b-42d2-9db6-51cbc21f27c4"],["DHEERAN A","LKG-B","2616","db050133-d2c3-447b-8b81-c0b4f0fbff4d"],["KUMARAN S","LKG-B","2618","86e85e5f-53b9-44f3-bd05-2f131f4c62b7"],["MAGIZHINI P","LKG-B","2619","55c2e7cf-4889-45f8-8d6b-da25b04a2028"],["MONISH K","LKG-B","2620","a42dd817-1601-42c6-b45b-48fc93e5709f"],["VARUNYUVAN S","LKG-B","2621","37d7f38a-7c3f-4f27-9517-da2ea1f63010"],["PRAGATHI P","LKG-B","2622","5c508a0e-405c-4873-a8f2-570fddd95c90"],["RASHMITHA A","LKG-A","2624","7ce87ed4-fdf6-445d-a572-b55383d42220"],["RUBAN M","LKG-A","2626","3c52cc99-47b5-4a09-a408-e1605753bafc"],["TANUSHRI J","LKG-B","2629","463b16c4-11e3-4f68-a96f-e74a1474bb5c"],["POONGUZHALI R","LKG-B","2630","6346dcbb-9c10-4fd0-b0d4-65bf8cfa5d1d"],["SIVANESH R","LKG-B","2631","a7f53511-de84-4a62-8b2e-bae16793101b"],["DHIYASH R","LKG-A","2632","2803e12b-a97f-42fe-bb7c-585faf4e23b9"],["EZHILOVIYA K","LKG-B","2633","395a4689-5911-424d-bce7-fd90c45a9b72"],["MITHRA R","LKG-B","2634","32b42ef6-8c32-44a4-bb7a-281dd32f64db"],["PUVITH S","LKG-A","2635","2e06a5c7-724a-42d1-bd7b-bbf173b18423"],["RAJESHWARI C","LKG-A","2636","3b2561e2-2893-4360-b770-458b4eaeb520"],["SHANMUGANATHAN M","LKG-A","2637","80c558c9-5d1b-4357-b843-29ef3311d819"],["SHANMUGAPRIYAN M","LKG-A","2638","1848cfb0-8e62-4302-95a9-03816b4b4f0b"],["SARVESH V","LKG-A","2640","6d5af8cc-73d3-4c15-8f69-380753e18508"],["ANUMESHVARAN S","LKG-A","2641","14fb3fac-602b-4df7-a1f9-db6018ade646"],["ANBUSIVAN M","LKG-A","2642","e0684d68-3670-4a60-8508-60c498b0346a"],["HARICHARAN S","LKG-B","2643","b74f2b5b-7ec5-4e11-b3c7-a1fab7a5bd43"],["NITHINRAM R","LKG-B","2644","e147f64c-503f-4c24-8114-952047a52752"],["SAIVARSHANTH K","IV-A","2648","d9595b60-9f81-4876-a39c-3139cb5fb5a6"],["TANIAMITRA V","I-A","2652","bf9c2842-4e6c-457e-9582-2bca6978b5e9"],["YOKITH S","V-A","2653","cbfa0bb9-3b8d-44d3-a056-aebe5ecee3e8"],["RENU VARSHINI K","V-A","2654","8ca7302a-2c5f-4ef7-b560-cb8fd8c6153b"],["KUMARAVEL U","VI-A","2655","e86c4c6d-e95e-4452-8366-dfb009f11cfb"],["GOPIKA","II-A","2656","388eba82-75eb-4b00-89c5-5c55c98dc7c7"],["SANDIPROSHAN M","VI-A","2657","5666b7a9-c025-4454-af53-74ecf36bfbc1"],["SAMITHA S","VI-A","2658","908dcef2-0d7d-41c3-be73-73dd80cd52f0"],["DIVYADHARSHAN K","LKG-B","2658","bac7f9ed-4496-4705-bfe7-bfaa043411e6"],["DEVASENA M","III-A","2659","47ffc598-e14f-4124-b0f8-b51d153ab089"],["JAIPRATHU V","I-A","2660","0d31f920-1a83-4a23-a0ce-ac1fdfb61990"],["NASREEN BEGAM","VI-A","2663","7fcd5036-d9a0-42ce-9bb3-aecac6e9dd1b"],["GURUPRAGASH P","LKG-B","2664","6d78a23c-ae8e-49d8-bdf1-851f5464cc9d"],["DHASHVIK K","LKG-B","2665","dff19923-7833-4465-bbd9-55b63600fd17"],["INIYAN A","LKG-B","2666","a73a6692-541c-46be-916e-4bc683e66f4b"],["UMAR T","VII-A","2668","2282088e-2937-4284-8632-a52437b9d9ec"],["AKSHAYA B","VII-A","2669","7d262bff-8667-4297-a603-cbcd7a8f2d71"],["SAKTHIVEL B","IV-A","2670","88164ee6-ddf6-4a04-8d36-7db521063b6e"],["E YOKESHWARAN","III-A","2671","48f46869-ec61-40bf-93b9-3f856005e966"],["NARESH S","VI-A","2672","eda3d696-c28f-4306-ad97-64563ecdde46"],["KAVI M","IV-A","2673","992e1a9d-9c0a-4d27-b8e1-5d6043ce2cb5"],["DHISAI K","IV-A","2674","1808047c-2591-4b7c-8284-4cd29e92e7c1"],["KRISH K","VI-A","2675","ed71fc3f-e5bb-4ff5-a20a-84b19ade15ff"],["RAKESH","IV-A","2676","c943f5d8-3b39-406e-895b-f0e76632144c"],["DHARSHAN K","III-A","2678","8fef0542-1ed3-4894-9563-b1844a363e3e"],["NAVIN V","LKG-B","2684","49976ae9-ceab-4fa7-aab7-93bcbfa33fc8"],["KISHWANTH M","LKG-B","2685","6b2f6d72-5168-4db7-b71c-244434cbc5e6"],["YUVADHARSHAN R","I-A","2686","6da945b8-26c6-4432-afff-564ae98e1429"],["AFFAN A","V-A","5001","40df2a9a-ccac-45d1-8b65-4128bf8f7ec0"],["HARISH","V-A","5003","b7a5ba8e-58b4-40ac-a948-e9c8add07390"],["MAYILESHMEGALAN P","V-A","5004","1dea544c-cb72-4b85-80fb-b4f02137d646"],["SIRANJSIVI","V-A","5007","d24b3263-3916-4980-b08d-5605c2078100"],["SUDHARSAN","V-A","5008","9087b394-4ed8-442c-af6f-92c9d36e43d6"],["THANKESHWARAN P","V-A","5008","064666e2-ee56-430a-9cd1-716fcb0b8791"],["VEDHIKA G","V-A","5009","e09ae62d-1042-44d2-bc48-d6631abbc93c"]];
+
+  async function insertRow(table, row) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      },
+      body: JSON.stringify(row),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(text || ('HTTP ' + res.status));
+    }
+  }
+
+  function showBanner(message, kind) {
+    const b = document.getElementById('banner');
+    b.textContent = message;
+    b.className = 'status-banner ' + kind;
+  }
+  function clearBanner() {
+    const b = document.getElementById('banner');
+    b.className = 'status-banner';
+  }
+
+  function markInvalid(fieldId, invalid) {
+    document.getElementById(fieldId).classList.toggle('invalid', invalid);
+  }
+  const MOBILE_RE = /^[6-9]\d{9}$/;
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // ── Tabs ──────────────────────────────────────────────────────────────
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.hidden = true);
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.tab).hidden = false;
+      clearBanner();
+    });
+  });
+
+  // ── Parent/student autocomplete ──────────────────────────────────────
+  let selectedStudent = null;
+  const searchInput = document.getElementById('student-search');
+  const resultsBox = document.getElementById('student-results');
+  const selectedBox = document.getElementById('student-selected');
+  const searchField = document.getElementById('student-search-field');
+  const parentSubmitBtn = document.querySelector('#form-parent .submit-btn');
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (q.length < 2) { resultsBox.hidden = true; return; }
+    const matches = DIRECTORY.filter(d => d[0].toLowerCase().includes(q)).slice(0, 20);
+    resultsBox.innerHTML = '';
+    if (matches.length === 0) {
+      resultsBox.innerHTML = '<div class="autocomplete-empty">No matching student found — check the spelling.</div>';
+    } else {
+      for (const m of matches) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = m[0] + '<div class="meta">Class ' + m[1] + ' · Admission #' + m[2] + '</div>';
+        btn.addEventListener('click', () => selectStudent(m));
+        resultsBox.appendChild(btn);
+      }
+    }
+    resultsBox.hidden = false;
+  });
+  document.addEventListener('click', (e) => {
+    if (!searchField.contains(e.target)) resultsBox.hidden = true;
+  });
+
+  function selectStudent(m) {
+    selectedStudent = m;
+    searchInput.value = '';
+    resultsBox.hidden = true;
+    searchField.hidden = true;
+    selectedBox.hidden = false;
+    selectedBox.innerHTML =
+      '<div class="selected-chip"><div><div class="name">' + m[0] + '</div>' +
+      '<div class="meta">Class ' + m[1] + ' · Admission #' + m[2] + '</div></div>' +
+      '<button type="button" id="change-student">Change</button></div>';
+    document.getElementById('change-student').addEventListener('click', () => {
+      selectedStudent = null;
+      searchField.hidden = false;
+      selectedBox.hidden = true;
+      parentSubmitBtn.disabled = true;
+    });
+    parentSubmitBtn.disabled = false;
+  }
+
+  document.getElementById('form-parent').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearBanner();
+    if (!selectedStudent) { showBanner('Please select your child from the search results first.', 'error'); return; }
+    const mobile = document.getElementById('parent-mobile').value.trim();
+    const email = document.getElementById('parent-email').value.trim();
+    const blood = document.getElementById('parent-blood').value;
+    const mobileOk = MOBILE_RE.test(mobile);
+    const emailOk = EMAIL_RE.test(email);
+    markInvalid('f-mobile', !mobileOk);
+    markInvalid('f-email', !emailOk);
+    if (!mobileOk || !emailOk) { showBanner('Please fix the highlighted fields.', 'error'); return; }
+
+    parentSubmitBtn.disabled = true;
+    parentSubmitBtn.textContent = 'Submitting…';
+    try {
+      await insertRow('parent_contact_submissions', {
+        student_id: selectedStudent[3],
+        mobile_number: mobile,
+        email: email,
+        blood_group: blood || null,
+      });
+      showBanner('Thank you! Details for ' + selectedStudent[0] + ' have been recorded.', 'success');
+      e.target.reset();
+      selectedStudent = null;
+      searchField.hidden = false;
+      selectedBox.hidden = true;
+    } catch (err) {
+      showBanner('Something went wrong submitting your details. Please try again.', 'error');
+      parentSubmitBtn.disabled = false;
+    } finally {
+      parentSubmitBtn.textContent = 'Submit details';
+    }
+  });
+
+  // ── Teacher form ──────────────────────────────────────────────────────
+  document.getElementById('form-teacher').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearBanner();
+    const name = document.getElementById('teacher-name').value.trim();
+    const mobile = document.getElementById('teacher-mobile').value.trim();
+    const email = document.getElementById('teacher-email').value.trim();
+    const nameOk = name.length > 1;
+    const mobileOk = mobile === '' || MOBILE_RE.test(mobile);
+    const emailOk = email === '' || EMAIL_RE.test(email);
+    markInvalid('t-name', !nameOk);
+    markInvalid('t-mobile', !mobileOk);
+    markInvalid('t-email', !emailOk);
+    if (!nameOk || !mobileOk || !emailOk) { showBanner('Please fix the highlighted fields.', 'error'); return; }
+
+    const btn = e.target.querySelector('.submit-btn');
+    btn.disabled = true; btn.textContent = 'Submitting…';
+    try {
+      await insertRow('teacher_detail_submissions', {
+        full_name: name,
+        mobile_number: mobile || null,
+        email: email || null,
+        qualification: document.getElementById('teacher-qual').value.trim() || null,
+        specialization: document.getElementById('teacher-spec').value.trim() || null,
+        experience_years: document.getElementById('teacher-exp').value ? Number(document.getElementById('teacher-exp').value) : null,
+        joining_date: document.getElementById('teacher-join').value || null,
+        remarks: document.getElementById('teacher-remarks').value.trim() || null,
+      });
+      showBanner('Thank you! Your details have been sent to the office.', 'success');
+      e.target.reset();
+    } catch (err) {
+      showBanner('Something went wrong submitting your details. Please try again.', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Submit details';
+    }
+  });
+
+  // ── Staff form ──────────────────────────────────────────────────────
+  document.getElementById('form-staff').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearBanner();
+    const name = document.getElementById('staff-name').value.trim();
+    const mobile = document.getElementById('staff-mobile').value.trim();
+    const nameOk = name.length > 1;
+    const mobileOk = mobile === '' || MOBILE_RE.test(mobile);
+    markInvalid('s-name', !nameOk);
+    markInvalid('s-mobile', !mobileOk);
+    if (!nameOk || !mobileOk) { showBanner('Please fix the highlighted fields.', 'error'); return; }
+
+    const btn = e.target.querySelector('.submit-btn');
+    btn.disabled = true; btn.textContent = 'Submitting…';
+    try {
+      await insertRow('staff_detail_submissions', {
+        full_name: name,
+        mobile_number: mobile || null,
+        designation: document.getElementById('staff-designation').value.trim() || null,
+        department: document.getElementById('staff-department').value.trim() || null,
+        joining_date: document.getElementById('staff-join').value || null,
+        remarks: document.getElementById('staff-remarks').value.trim() || null,
+      });
+      showBanner('Thank you! Your details have been sent to the office.', 'success');
+      e.target.reset();
+    } catch (err) {
+      showBanner('Something went wrong submitting your details. Please try again.', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Submit details';
+    }
+  });
+
+  // ── Transport form ────────────────────────────────────────────────────
+  document.getElementById('form-transport').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearBanner();
+    const number = document.getElementById('bus-number').value.trim();
+    const contact = document.getElementById('bus-driver-contact').value.trim();
+    const numberOk = number.length > 1;
+    const contactOk = contact === '' || MOBILE_RE.test(contact);
+    markInvalid('tr-number', !numberOk);
+    markInvalid('tr-contact', !contactOk);
+    if (!numberOk || !contactOk) { showBanner('Please fix the highlighted fields.', 'error'); return; }
+
+    const btn = e.target.querySelector('.submit-btn');
+    btn.disabled = true; btn.textContent = 'Submitting…';
+    try {
+      await insertRow('bus_detail_submissions', {
+        bus_number: number,
+        route: document.getElementById('bus-route').value.trim() || null,
+        driver_name: document.getElementById('bus-driver').value.trim() || null,
+        driver_contact: contact || null,
+        capacity: document.getElementById('bus-capacity').value ? Number(document.getElementById('bus-capacity').value) : null,
+        notes: document.getElementById('bus-notes').value.trim() || null,
+      });
+      showBanner('Thank you! The bus details have been sent to the office.', 'success');
+      e.target.reset();
+    } catch (err) {
+      showBanner('Something went wrong submitting these details. Please try again.', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Submit details';
+    }
+  });
+</script>

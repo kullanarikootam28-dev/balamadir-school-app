@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Balamandir App Manual</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ink:#0B1120;
+    --ink-soft:#5B6472;
+    --sky:#2E7EB0;
+    --leaf:#1F7A3D;
+    --gold:#B9860A;
+    --paper:#F7F8FB;
+    --surface:#FFFFFF;
+    --line:#E1E5ED;
+    --pill-req-bg:#0B1120;
+    --pill-req-fg:#FFFFFF;
+    --pill-opt-bg:transparent;
+    --pill-opt-fg:#5B6472;
+    --code-bg:#EEF1F6;
+    --shadow: 0 1px 2px rgba(11,17,32,0.04), 0 8px 24px rgba(11,17,32,0.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#EDF1F7;
+      --ink-soft:#9AA5B4;
+      --sky:#6FB6E0;
+      --leaf:#5FCB86;
+      --gold:#E8C24A;
+      --paper:#0B0F19;
+      --surface:#131826;
+      --line:#232A3B;
+      --pill-req-bg:#EDF1F7;
+      --pill-req-fg:#0B0F19;
+      --pill-opt-bg:transparent;
+      --pill-opt-fg:#9AA5B4;
+      --code-bg:#1A2032;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#EDF1F7;
+    --ink-soft:#9AA5B4;
+    --sky:#6FB6E0;
+    --leaf:#5FCB86;
+    --gold:#E8C24A;
+    --paper:#0B0F19;
+    --surface:#131826;
+    --line:#232A3B;
+    --pill-req-bg:#EDF1F7;
+    --pill-req-fg:#0B0F19;
+    --pill-opt-bg:transparent;
+    --pill-opt-fg:#9AA5B4;
+    --code-bg:#1A2032;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', system-ui, -apple-system, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+  }
+  h1,h2,h3,.brand,.navlabel{ font-family:'Sora', system-ui, sans-serif; text-wrap:balance; }
+  code, .mono, .cell-field, .cell-example, .field-tag{
+    font-family:'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  a{ color:var(--sky); }
+
+  .layout{
+    display:grid;
+    grid-template-columns: 260px minmax(0,1fr);
+    max-width: 1180px;
+    margin: 0 auto;
+    align-items:start;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y:auto;
+    padding: 28px 20px 40px;
+    border-right: 1px solid var(--line);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:9px;
+    background: linear-gradient(155deg, var(--ink), var(--sky));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold);
+    font-weight:700;
+    font-size:16px;
+    flex:none;
+  }
+  .brand-text{ font-weight:700; font-size:15.5px; line-height:1.25; }
+  .tagline{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin: 2px 0 26px 44px;
+    letter-spacing:.02em;
+  }
+  nav.toc{ display:flex; flex-direction:column; gap:2px; }
+  .navlabel{
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin: 18px 0 6px 10px;
+  }
+  .navlabel:first-child{ margin-top:0; }
+  nav.toc a{
+    color:var(--ink);
+    text-decoration:none;
+    font-size:14px;
+    padding:7px 10px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+  }
+  nav.toc a:hover{ background:var(--code-bg); }
+  .dot{ width:7px; height:7px; border-radius:50%; flex:none; }
+  .dot.admin{ background:var(--ink); }
+  .dot.teacher{ background:var(--sky); }
+  .dot.student{ background:var(--leaf); }
+  .dot.ref{ background:var(--gold); }
+
+  /* ---------- Main content ---------- */
+  main{ padding: 44px 40px 100px; min-width:0; }
+  .hero{ max-width:640px; margin-bottom:56px; }
+  .hero h1{ font-size:30px; font-weight:700; margin:0 0 10px; }
+  .hero p{ color:var(--ink-soft); font-size:16px; margin:0; }
+  .hero .badges{ display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
+  .badge{
+    font-size:12px; font-weight:600; padding:5px 11px; border-radius:100px;
+    border:1px solid var(--line); color:var(--ink-soft);
+  }
+
+  section.role{ margin-bottom:64px; scroll-margin-top: 24px; }
+  .role-head{
+    display:flex; align-items:baseline; gap:12px;
+    border-bottom:2px solid var(--line);
+    padding-bottom:12px; margin-bottom:26px;
+  }
+  .role-head h2{ font-size:22px; font-weight:700; margin:0; }
+  .role-head .who{ font-size:13px; color:var(--ink-soft); }
+  section.role.admin .role-head{ border-color:var(--ink); }
+  section.role.teacher .role-head{ border-color:var(--sky); }
+  section.role.student .role-head{ border-color:var(--leaf); }
+
+  .feature{
+    display:grid;
+    grid-template-columns: 26px minmax(0,1fr);
+    gap:14px;
+    padding: 18px 0;
+    border-top:1px solid var(--line);
+    scroll-margin-top: 24px;
+  }
+  .feature:first-of-type{ border-top:none; }
+  .feature .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding-top:2px;
+  }
+  .feature h3{ font-size:16.5px; font-weight:600; margin:0 0 4px; }
+  .feature .purpose{ color:var(--ink-soft); font-size:14.5px; margin:0 0 10px; max-width:62ch; }
+  .feature ol, .feature ul{ margin:0; padding-left:20px; font-size:14.5px; }
+  .feature li{ margin-bottom:5px; }
+  .feature li:last-child{ margin-bottom:0; }
+  .feature .note{
+    margin-top:10px; font-size:13.5px; color:var(--ink-soft);
+    background:var(--code-bg); border-radius:8px; padding:9px 12px;
+    max-width:62ch;
+  }
+  .feature .note strong{ color:var(--ink); }
+
+  /* ---------- CSV reference ---------- */
+  section.ref{ scroll-margin-top:24px; }
+  .ref .role-head{ border-color:var(--gold); }
+  .ref-intro{ color:var(--ink-soft); font-size:14.5px; max-width:66ch; margin: 0 0 28px; }
+  .ref-intro code{ background:var(--code-bg); padding:2px 6px; border-radius:5px; font-size:13px; }
+
+  .sheet{ margin-bottom:36px; }
+  .sheet h3{ font-size:16px; font-weight:600; margin:0 0 3px; }
+  .sheet .filename{
+    display:inline-block; font-size:12.5px; color:var(--ink-soft);
+    margin-bottom:14px;
+  }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:12px; }
+  table{ border-collapse:collapse; width:100%; min-width:560px; font-size:13.5px; }
+  thead th{
+    text-align:left; font-size:11px; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--ink-soft); font-weight:600; padding:10px 14px;
+    border-bottom:1px solid var(--line);
+    background:var(--code-bg);
+  }
+  tbody td{ padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tbody tr:last-child td{ border-bottom:none; }
+  .cell-field{ font-size:13px; font-weight:500; white-space:nowrap; }
+  .cell-example{ font-size:12.5px; color:var(--ink-soft); white-space:nowrap; }
+  .pill{
+    display:inline-block; font-size:11px; font-weight:600; padding:3px 9px;
+    border-radius:100px; letter-spacing:.03em;
+  }
+  .pill.req{ background:var(--pill-req-bg); color:var(--pill-req-fg); }
+  .pill.opt{ background:var(--pill-opt-bg); color:var(--pill-opt-fg); border:1px solid var(--line); }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 860px){
+    .layout{ grid-template-columns: 1fr; }
+    .sidebar{
+      position:static; height:auto; border-right:none; border-bottom:1px solid var(--line);
+      padding: 20px 20px 14px;
+    }
+    .tagline{ margin-left:44px; margin-bottom:16px; }
+    nav.toc{ flex-direction:row; flex-wrap:wrap; }
+    .navlabel{ width:100%; margin:14px 0 4px 0; }
+    main{ padding: 32px 20px 80px; }
+    .feature{ grid-template-columns: 1fr; }
+    .feature .num{ display:none; }
+  }
+
+  :focus-visible{ outline:2px solid var(--sky); outline-offset:2px; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">B</div>
+      <div class="brand-text">Balamandir<br>School App</div>
+    </div>
+    <div class="tagline">Empower. Enlighten.<br>User manual</div>
+
+    <nav class="toc">
+      <a href="#getting-started"><span class="dot ref"></span>Getting started</a>
+
+      <div class="navlabel">Admin</div>
+      <a href="#f-users"><span class="dot admin"></span>User Management</a>
+      <a href="#f-classes"><span class="dot admin"></span>Class Configuration</a>
+      <a href="#f-timetable-setup"><span class="dot admin"></span>Timetable Setup</a>
+      <a href="#f-broadcasts"><span class="dot admin"></span>Global Broadcasts</a>
+      <a href="#f-import"><span class="dot admin"></span>Spreadsheet Import</a>
+      <a href="#f-fees"><span class="dot admin"></span>Fee Management</a>
+      <a href="#f-attendance-reports"><span class="dot admin"></span>Attendance Reports</a>
+      <a href="#f-marks-reports"><span class="dot admin"></span>Marks Reports</a>
+      <a href="#f-rankings"><span class="dot admin"></span>Rankings</a>
+      <a href="#f-complaint-reports"><span class="dot admin"></span>Complaint Reports</a>
+
+      <div class="navlabel">Teacher</div>
+      <a href="#f-attendance-registry"><span class="dot teacher"></span>Attendance Registry</a>
+      <a href="#f-gradebook"><span class="dot teacher"></span>Gradebook Input</a>
+      <a href="#f-noticeboard"><span class="dot teacher"></span>Class Noticeboard</a>
+      <a href="#f-messaging-portal"><span class="dot teacher"></span>Messaging Portal</a>
+      <a href="#f-my-students"><span class="dot teacher"></span>My Students</a>
+
+      <div class="navlabel">Student &amp; Parent</div>
+      <a href="#f-profile-overview"><span class="dot student"></span>Profile Overview</a>
+      <a href="#f-attendance-calendar"><span class="dot student"></span>Attendance Calendar</a>
+      <a href="#f-report-card"><span class="dot student"></span>Academic Report Card</a>
+      <a href="#f-daily-timetable"><span class="dot student"></span>Daily Timetable</a>
+      <a href="#f-alerts"><span class="dot student"></span>Alerts Dashboard</a>
+      <a href="#f-messages"><span class="dot student"></span>Messages</a>
+      <a href="#f-fee-payments"><span class="dot student"></span>Fee Payments</a>
+      <a href="#f-complaint-box"><span class="dot student"></span>Complaint Box</a>
+
+      <div class="navlabel">Reference</div>
+      <a href="#csv-format"><span class="dot ref"></span>Spreadsheet formats</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="hero" id="getting-started">
+      <h1>How to use the Balamandir School App</h1>
+      <p>One app, three logins. What you can see and do depends on whether the school office signs you in as an Admin, a Teacher, or a Student (parents share the student's login). This page walks through every screen in plain language, plus the exact spreadsheet format for bulk data uploads.</p>
+      <div class="badges">
+        <span class="badge">Admin</span>
+        <span class="badge">Teacher</span>
+        <span class="badge">Student &amp; Parent</span>
+      </div>
+    </div>
+
+    <section class="role" style="margin-bottom:56px;">
+      <div class="role-head"><h2>Signing in</h2><span class="who">everyone</span></div>
+
+      <div class="feature">
+        <div class="num">01</div>
+        <div>
+          <h3>First sign-in</h3>
+          <p class="purpose">Your school office creates your account and gives you an email and a starting password.</p>
+          <ol>
+            <li>Open the app, enter your email and password.</li>
+            <li>Tap <strong>Sign In</strong>.</li>
+          </ol>
+          <div class="note">You'll stay signed in after this — the app doesn't ask again each time you open it. You only see this screen again if you tap <strong>Sign out</strong>.</div>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="num">02</div>
+        <div>
+          <h3>Forgot your password?</h3>
+          <p class="purpose">After 3 unsuccessful sign-in attempts, two extra links appear under the Sign In button.</p>
+          <ol>
+            <li>Tap <strong>Forgot password?</strong></li>
+            <li>Enter your email and tap <strong>Send Reset Link</strong>.</li>
+            <li>Open the email on your phone and tap the link inside it.</li>
+            <li>Choose a new password and save it.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="num">03</div>
+        <div>
+          <h3>Sign in without typing a password</h3>
+          <p class="purpose">A one-tap email link, useful if you've forgotten your password but just want to get in.</p>
+          <ol>
+            <li>Tap <strong>Sign in with magic link instead</strong>.</li>
+            <li>Enter your email and tap <strong>Send Magic Link</strong>.</li>
+            <li>Open the email on your phone and tap the link — you're signed in.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="num">04</div>
+        <div>
+          <h3>Change your password anytime</h3>
+          <p class="purpose">Available to every role from the key icon at the top of every dashboard.</p>
+          <ol>
+            <li>Tap the <strong>key icon</strong> next to Sign out.</li>
+            <li>Type a new password twice and tap <strong>Save Password</strong>.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ADMIN ============ -->
+    <section class="role admin" id="admin">
+      <div class="role-head"><h2>Admin panel</h2><span class="who">runs the whole school's data</span></div>
+
+      <div class="feature" id="f-users">
+        <div class="num">01</div>
+        <div>
+          <h3>User Management</h3>
+          <p class="purpose">Create and manage every teacher, student, and admin account. Search finds one person out of hundreds instantly.</p>
+          <ul>
+            <li>Tap <strong>Register</strong>, fill in name / email / password / role, tap <strong>Create</strong>.</li>
+            <li>Tap anyone's row to open their full profile — photo, mobile number, class.</li>
+            <li>Use the pencil and bin icons to edit or remove an account.</li>
+            <li>Type in the search box to filter by name or email.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature" id="f-classes">
+        <div class="num">02</div>
+        <div>
+          <h3>Class Configuration</h3>
+          <p class="purpose">Four tabs that set up how the school's classes are structured.</p>
+          <ul>
+            <li><strong>Classes</strong> — create a grade + section, assign a homeroom teacher.</li>
+            <li><strong>Subjects</strong> — add subject names taught across the school.</li>
+            <li><strong>Assign Teachers</strong> — link a teacher to a specific class + subject.</li>
+            <li><strong>Roster</strong> — enroll students into a class (searchable list, so it stays fast even with hundreds of students).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature" id="f-timetable-setup">
+        <div class="num">03</div>
+        <div>
+          <h3>Timetable Setup</h3>
+          <p class="purpose">Builds the weekly period grid every class and student sees.</p>
+          <ol>
+            <li>Pick a class.</li>
+            <li>Fill in each period's subject, teacher, and start/end time on the grid.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="feature" id="f-broadcasts">
+        <div class="num">04</div>
+        <div>
+          <h3>Global Broadcasts</h3>
+          <p class="purpose">School-wide notices — every student and teacher sees these in their Alerts.</p>
+          <ol>
+            <li>Tap <strong>Broadcast</strong>.</li>
+            <li>Write a title and message.</li>
+            <li>Optionally tap <strong>Attach photo/video</strong>.</li>
+            <li>Tap <strong>Post</strong>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="feature" id="f-import">
+        <div class="num">05</div>
+        <div>
+          <h3>Spreadsheet Import</h3>
+          <p class="purpose">Add many classes, timetable periods, or students at once from a spreadsheet instead of typing each one in.</p>
+          <ol>
+            <li>Open the <strong>Classes</strong>, <strong>Timetable</strong>, or <strong>Students</strong> tab.</li>
+            <li>Tap <strong>Download sample sheet</strong> to get a correctly-formatted starting file.</li>
+            <li>Fill it in and save it as .csv or .xlsx.</li>
+            <li>Tap <strong>Pick .xlsx or .csv file</strong> and select it.</li>
+            <li>Check the column mapping and the preview table look right.</li>
+            <li>Tap <strong>Import</strong> — any row with a problem is listed with an explanation, and every other row still goes through.</li>
+          </ol>
+          <div class="note">See <strong><a href="#csv-format">Spreadsheet formats</a></strong> below for the exact columns each sheet needs.</div>
+        </div>
+      </div>
+
+      <div class="feature" id="f-fees">
+        <div class="num">06</div>
+        <div>
+          <h3>Fee Management</h3>
+          <p class="purpose">Track what each student owes, mark it paid, and hand over a receipt.</p>
+          <ul>
+            <li><strong>Payments</strong> tab — add a fee record, mark it paid, filter by status.</li>
+            <li>Tap the <strong>share icon</strong> on a paid record to generate a PDF receipt and send it — the phone's share sheet includes WhatsApp, so this is how receipts reach a parent today.</li>
+            <li><strong>Reports</strong> tab — total collected vs. pending, and a full pending list.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature" id="f-attendance-reports">
+        <div class="num">07</div>
+        <div>
+          <h3>Attendance Reports</h3>
+          <p class="purpose">Charts of attendance across the whole school or one class.</p>
+          <p>Pick a class (or "All classes") and switch between <strong>Daily</strong>, <strong>Monthly</strong>, and <strong>Annual</strong> views.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-marks-reports">
+        <div class="num">08</div>
+        <div>
+          <h3>Marks Reports</h3>
+          <p class="purpose">Class performance, subject by subject.</p>
+          <p>Pick a class to see the average score per subject as a bar chart. Pick one subject on top of that to see every student's score in it.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-rankings">
+        <div class="num">09</div>
+        <div>
+          <h3>Rankings</h3>
+          <p class="purpose">Who's performing best — visible to admins only.</p>
+          <p><strong>Students</strong> and <strong>Teachers</strong> tabs, each ranked by average grade, with a trend line for the top performers over time.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-complaint-reports">
+        <div class="num">10</div>
+        <div>
+          <h3>Complaint Reports</h3>
+          <p class="purpose">Reads what's been submitted through the student Complaint Box.</p>
+          <div class="note">Complaints carry <strong>no name or student ID</strong> — the list is intentionally anonymous, with nothing to trace a message back to whoever sent it.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TEACHER ============ -->
+    <section class="role teacher" id="teacher">
+      <div class="role-head"><h2>Teacher panel</h2><span class="who">only shows your assigned classes</span></div>
+
+      <div class="feature" id="f-attendance-registry">
+        <div class="num">01</div>
+        <div>
+          <h3>Attendance Registry</h3>
+          <p class="purpose">Mark daily attendance for a class you teach.</p>
+          <ol>
+            <li>Pick your class and the date.</li>
+            <li>Mark each student Present / Absent / Late / Excused — or tap <strong>Mark all present</strong> and adjust the few exceptions.</li>
+            <li>Tap <strong>Save Attendance</strong>.</li>
+          </ol>
+          <p>Switch to the <strong>History</strong> tab to see everything already recorded for that class.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-gradebook">
+        <div class="num">02</div>
+        <div>
+          <h3>Gradebook Input</h3>
+          <p class="purpose">Enter exam or test scores for a class and subject you're assigned to.</p>
+          <ol>
+            <li>Pick the class + subject.</li>
+            <li>Enter each student's score in the grid.</li>
+            <li>Tap <strong>Save Grades</strong>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="feature" id="f-noticeboard">
+        <div class="num">03</div>
+        <div>
+          <h3>Class Noticeboard</h3>
+          <p class="purpose">Post a notice to just one of your classes — not the whole school.</p>
+          <p>Pick the class, tap <strong>Notice</strong>, write it, optionally attach a photo or video, and post. Students in that class see it in their Alerts.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-messaging-portal">
+        <div class="num">04</div>
+        <div>
+          <h3>Messaging Portal</h3>
+          <p class="purpose">Direct chat with the parents of students in your classes.</p>
+          <p>Tap a name to open the conversation, type, and send — messages arrive instantly on both ends.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-my-students">
+        <div class="num">05</div>
+        <div>
+          <h3>My Students</h3>
+          <p class="purpose">One photo roster of every student across all the classes you teach.</p>
+          <ul>
+            <li>Tap any student to open their full profile.</li>
+            <li>If their mobile number is on file, a <strong>Message on WhatsApp</strong> button opens a chat with them directly — no need to save the number to your phone first.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STUDENT / PARENT ============ -->
+    <section class="role student" id="student">
+      <div class="role-head"><h2>Student &amp; parent panel</h2><span class="who">one shared login per student</span></div>
+
+      <div class="feature" id="f-profile-overview">
+        <div class="num">01</div>
+        <div>
+          <h3>Profile Overview</h3>
+          <p class="purpose">Your name, roll number, and class, at a glance.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-attendance-calendar">
+        <div class="num">02</div>
+        <div>
+          <h3>Attendance Calendar</h3>
+          <p class="purpose">A month view — green for present, red for absent — plus your overall attendance percentage against the school's requirement.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-report-card">
+        <div class="num">03</div>
+        <div>
+          <h3>Academic Report Card</h3>
+          <p class="purpose">Every recorded score, grouped by subject, with a radar chart comparing subjects at a glance.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-daily-timetable">
+        <div class="num">04</div>
+        <div>
+          <h3>Daily Timetable</h3>
+          <p class="purpose">Today's periods — subject, time, and teacher for each.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-alerts">
+        <div class="num">05</div>
+        <div>
+          <h3>Alerts Dashboard</h3>
+          <p class="purpose">Every notice that applies to you — school-wide broadcasts and your class's own noticeboard — newest first.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-messages">
+        <div class="num">06</div>
+        <div>
+          <h3>Messages</h3>
+          <p class="purpose">Direct chat with your class teacher.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-fee-payments">
+        <div class="num">07</div>
+        <div>
+          <h3>Fee Payments</h3>
+          <p class="purpose">See what's due, what's overdue, and what's already been paid.</p>
+        </div>
+      </div>
+
+      <div class="feature" id="f-complaint-box">
+        <div class="num">08</div>
+        <div>
+          <h3>Complaint Box</h3>
+          <p class="purpose">Send a message straight to the school office.</p>
+          <div class="note">It's genuinely anonymous — your name is never attached, not even for the admin reading it.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CSV REFERENCE ============ -->
+    <section class="role ref" id="csv-format">
+      <div class="role-head"><h2>Spreadsheet formats</h2><span class="who">for Spreadsheet Import</span></div>
+      <p class="ref-intro">
+        Each sheet needs one header row followed by one row per record, saved as <code>.csv</code> or <code>.xlsx</code>. Your column headings don't have to match these names exactly — Spreadsheet Import tries to auto-detect them, and you can re-map any column by hand before importing. What matters is having the right <em>data</em> in the sheet. Tap <strong>Download sample sheet</strong> inside the app to get a ready-made file in this exact shape.
+      </p>
+
+      <div class="sheet">
+        <h3>Classes sheet</h3>
+        <span class="filename">classes_sample.csv</span>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Column</th><th>Required</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-field">grade</td><td><span class="pill req">Required</span></td><td>Grade level</td><td class="cell-example">10</td></tr>
+              <tr><td class="cell-field">section</td><td><span class="pill req">Required</span></td><td>Section letter</td><td class="cell-example">A</td></tr>
+              <tr><td class="cell-field">academic_year</td><td><span class="pill opt">Optional</span></td><td>Defaults to the current year</td><td class="cell-example">2026</td></tr>
+              <tr><td class="cell-field">teacher_email</td><td><span class="pill opt">Optional</span></td><td>Homeroom teacher — must match an existing teacher account</td><td class="cell-example">teacher.test@schoolapp.dev</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sheet">
+        <h3>Timetable sheet</h3>
+        <span class="filename">timetable_sample.csv</span>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Column</th><th>Required</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-field">grade</td><td><span class="pill req">Required</span></td><td>Must match an existing class</td><td class="cell-example">10</td></tr>
+              <tr><td class="cell-field">section</td><td><span class="pill req">Required</span></td><td>Must match an existing class</td><td class="cell-example">A</td></tr>
+              <tr><td class="cell-field">academic_year</td><td><span class="pill opt">Optional</span></td><td>Defaults to the current year</td><td class="cell-example">2026</td></tr>
+              <tr><td class="cell-field">day_of_week</td><td><span class="pill req">Required</span></td><td>A day name, or 1–7 (Monday = 1)</td><td class="cell-example">Monday</td></tr>
+              <tr><td class="cell-field">period_number</td><td><span class="pill req">Required</span></td><td>Period slot for that day</td><td class="cell-example">1</td></tr>
+              <tr><td class="cell-field">subject_name</td><td><span class="pill opt">Optional</span></td><td>Created automatically if it doesn't exist yet</td><td class="cell-example">Mathematics</td></tr>
+              <tr><td class="cell-field">teacher_email</td><td><span class="pill opt">Optional</span></td><td>Must match an existing teacher account</td><td class="cell-example">teacher.test@schoolapp.dev</td></tr>
+              <tr><td class="cell-field">start_time</td><td><span class="pill req">Required</span></td><td>24-hour, HH:MM</td><td class="cell-example">09:00</td></tr>
+              <tr><td class="cell-field">end_time</td><td><span class="pill req">Required</span></td><td>24-hour, HH:MM</td><td class="cell-example">09:45</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sheet">
+        <h3>Students sheet</h3>
+        <span class="filename">students_sample.csv</span>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Column</th><th>Required</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-field">full_name</td><td><span class="pill req">Required</span></td><td>Student's full name</td><td class="cell-example">Jane Doe</td></tr>
+              <tr><td class="cell-field">email</td><td><span class="pill req">Required</span></td><td>Becomes their login if the account doesn't exist yet</td><td class="cell-example">jane.doe@example.com</td></tr>
+              <tr><td class="cell-field">roll_number</td><td><span class="pill opt">Optional</span></td><td>Roll number within the class</td><td class="cell-example">1</td></tr>
+              <tr><td class="cell-field">grade</td><td><span class="pill req">Required</span></td><td>Must match an existing class</td><td class="cell-example">10</td></tr>
+              <tr><td class="cell-field">section</td><td><span class="pill req">Required</span></td><td>Must match an existing class</td><td class="cell-example">A</td></tr>
+              <tr><td class="cell-field">academic_year</td><td><span class="pill opt">Optional</span></td><td>Defaults to the current year</td><td class="cell-example">2026</td></tr>
+              <tr><td class="cell-field">phone</td><td><span class="pill opt">Optional</span></td><td>Enables the WhatsApp button on their profile</td><td class="cell-example">9999999999</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note" style="max-width:66ch; margin-top:14px;">
+          If a row's email doesn't match an existing account, the app creates a brand-new student login automatically with a random password — shown once, right after the import finishes. <strong>Write those down immediately</strong>; they aren't shown again.
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>

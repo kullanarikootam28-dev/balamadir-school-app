@@ -1,0 +1,22 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - always_use_package_imports
+    - avoid_print
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - sized_box_for_whitespace
+    - use_super_parameters
+
+analyzer:
+  errors:
+    missing_required_param: error
+    missing_return: error
+  exclude:
+    - lib/**.g.dart
+    - lib/**.freezed.dart
+    - build/**
+    - android/**
+    - web/**
+    - windows/**

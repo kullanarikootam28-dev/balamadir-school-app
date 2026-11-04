@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    ── School Management App — PWA Entry Point ──────────────────────────────
+    iOS Add-to-Home-Screen: Safari reads apple-touch-icon and apple-mobile-web-app-*
+    meta tags to pin this as a full-screen native-like app on the iPhone home screen.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="School Management Application — Attendance, Grades, Fees.">
+
+  <!-- ── PWA / iOS Home Screen ────────────────────────────────────────────── -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="School App">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- ── Standard PWA ─────────────────────────────────────────────────────── -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- ── Viewport ─────────────────────────────────────────────────────────── -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,
+        maximum-scale=1.0, user-scalable=no">
+
+  <title>School Management</title>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <style>
+    body { margin: 0; background-color: #1565C0; }
+    /* Splash shown until Flutter engine mounts */
+    #splash {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #1565C0;
+    }
+    #splash svg { width: 80px; height: 80px; fill: white; }
+  </style>
+</head>
+<body>
+  <div id="splash">
+    <!-- School icon as inline SVG splash -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3 1 9l11 6 9-4.91V17h2V9L12 3z"/>
+    </svg>
+  </div>
+
+  <script>
+    // Remove splash once Flutter loads
+    window.addEventListener('flutter-first-frame', function() {
+      document.getElementById('splash').remove();
+    });
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
